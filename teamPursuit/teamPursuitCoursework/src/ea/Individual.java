@@ -8,8 +8,7 @@ public class Individual {
 	boolean[] transitionStrategy = new boolean[22] ;
 	int[] pacingStrategy = new int[23];
 	
-	SimulationResult result = null;	
-	
+	SimulationResult result = null;
 	public Individual() {		
 		
 	}
@@ -57,12 +56,14 @@ public class Individual {
 	// complete 10% or 90% of the race
 	
 	public double getFitness(){
-		double fitness = 1000;		
-		if (result == null || result.getProportionCompleted() < 0.999){
+		double fitness = 10000;
+		double distMade;
+		if (result == null){
 			return fitness;
 		}
-		else{				
-			fitness = result.getFinishTime();
+		else{
+			distMade = result.getProportionCompleted();
+			fitness = result.getFinishTime() + (100-(distMade*100));
 		}
 		return fitness;
 	}

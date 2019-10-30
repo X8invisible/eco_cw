@@ -86,6 +86,15 @@ public class EA implements Runnable{
 				int index = Parameters.rnd.nextInt(child.transitionStrategy.length);
 				child.transitionStrategy[index] = !child.transitionStrategy[index];
 			}
+
+			//mutate the pacing by swapping two values in the chromosome
+			for(int i = 0; i< mutationRate;i++){
+				int index = Parameters.rnd.nextInt(child.pacingStrategy.length);
+				int index2 = Parameters.rnd.nextInt(child.pacingStrategy.length);
+				int p = child.pacingStrategy[index];
+				child.pacingStrategy[index] = child.pacingStrategy[index2];
+				child.pacingStrategy[index2] = p;
+			}
 			
 		
 		
