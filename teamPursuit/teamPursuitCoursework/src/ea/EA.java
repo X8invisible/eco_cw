@@ -44,8 +44,8 @@ public class EA implements Runnable{
 		iteration = 0;
 		while(iteration < Parameters.maxIterations){
 			iteration++;
-			Individual parent1 = tournamentSelection();
-			Individual parent2 = tournamentSelection();
+			Individual parent1 = rouletteSelection();
+			Individual parent2 = rouletteSelection();
 			Individual child = crossover(parent1, parent2);
 			child = mutate(child);
 			child.evaluate(teamPursuit);
@@ -108,7 +108,7 @@ public class EA implements Runnable{
 		}
 		Individual child = new Individual();
 		
-		int crossoverPoint = Parameters.rnd.nextInt(parent1.transitionStrategy.length);
+		int crossoverPoint = parent1.transitionStrategy.length/2;
 		
 		// just copy the pacing strategy from p1 - not evolving in this version
 		for(int i = 0; i < parent1.pacingStrategy.length; i++){			
@@ -137,7 +137,20 @@ public class EA implements Runnable{
 		}
 		return getBest(candidates).copy();
 	}
-
+	private Individual rouletteSelection(){
+		double fitnessSum = 0;
+		for(int i =0; i<population.size();i++){
+			fitnessSum += population.get(i).getFitness();
+		}
+		int randNumber = Parameters.rnd.nextInt((int)fitnessSum);
+		int currentSum = 0;
+		int index =0;
+		while(currentSum < randNumber && index < population.size()){
+			currentSum += population.get(index).getFitness();
+			index++;
+		}
+		return population.get(index -1).copy();
+	}
 
 	private Individual getBest(ArrayList<Individual> aPopulation) {
 		double bestFitness = Double.MAX_VALUE;

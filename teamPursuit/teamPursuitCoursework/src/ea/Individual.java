@@ -23,7 +23,8 @@ public class Individual {
 		}
 		
 		for(int i = 0; i < pacingStrategy.length; i++){
-			pacingStrategy[i] = Parameters.DEFAULT_WOMENS_PACING_STRATEGY[i];
+            pacingStrategy[i] = Parameters.rnd.nextInt(200) +300;
+			//pacingStrategy[i] = Parameters.DEFAULT_WOMENS_PACING_STRATEGY[i];
 		}
 		
 	}
