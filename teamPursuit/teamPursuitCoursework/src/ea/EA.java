@@ -17,6 +17,8 @@ package ea;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import teamPursuit.TeamPursuit;
 import teamPursuit.WomensTeamPursuit;
 
@@ -46,7 +48,11 @@ public class EA implements Runnable{
 			iteration++;
 			Individual parent1 = rouletteSelection();
 			Individual parent2 = rouletteSelection();
+			//ArrayList<Individual> parents = stochasticSelection();
+			//Individual parent1 = parents.get(0);
+			//Individual parent2 = parents.get(1);
 			Individual child = crossover(parent1, parent2);
+			//Individual child = twoCrossover(parent1, parent2);
 			child = mutate(child);
 			child.evaluate(teamPursuit);
 			replace(child);
@@ -108,23 +114,88 @@ public class EA implements Runnable{
 		}
 		Individual child = new Individual();
 		
-		int crossoverPoint = parent1.transitionStrategy.length/2;
-		
-		// just copy the pacing strategy from p1 - not evolving in this version
-		for(int i = 0; i < parent1.pacingStrategy.length; i++){			
+		int crossoverPointT = Parameters.rnd.nextInt(parent1.transitionStrategy.length);
+		int crossoverPointP = Parameters.rnd.nextInt(parent1.pacingStrategy.length);
+
+		for(int i = 0; i < crossoverPointP; i++){
 			child.pacingStrategy[i] = parent1.pacingStrategy[i];
 		}
+		for(int i = crossoverPointP; i < parent2.pacingStrategy.length; i++){
+			child.pacingStrategy[i] = parent2.pacingStrategy[i];
+		}
 		
-		
-		for(int i = 0; i < crossoverPoint; i++){
+		for(int i = 0; i < crossoverPointT; i++){
 			child.transitionStrategy[i] = parent1.transitionStrategy[i];
 		}
-		for(int i = crossoverPoint; i < parent2.transitionStrategy.length; i++){
+		for(int i = crossoverPointT; i < parent2.transitionStrategy.length; i++){
 			child.transitionStrategy[i] = parent2.transitionStrategy[i];
 		}
 		return child;
 	}
 
+	private Individual uniformCrossover(Individual parent1, Individual parent2) {
+		if(Parameters.rnd.nextDouble() > Parameters.crossoverProbability){
+			return parent1;
+		}
+		Individual child = new Individual();
+
+		for(int i =0; i< parent1.pacingStrategy.length; i++){
+			if(Parameters.rnd.nextDouble() < 0.5)
+				child.pacingStrategy[i] = parent1.pacingStrategy[i];
+			else
+				child.pacingStrategy[i] = parent2.pacingStrategy[i];
+		}
+		for(int i =0; i< parent1.transitionStrategy.length; i++){
+			if(Parameters.rnd.nextDouble() < 0.5)
+				child.transitionStrategy[i] = parent1.transitionStrategy[i];
+			else
+				child.transitionStrategy[i] = parent2.transitionStrategy[i];
+		}
+		return child;
+	}
+
+	private Individual twoCrossover(Individual parent1, Individual parent2) {
+		if(Parameters.rnd.nextDouble() > Parameters.crossoverProbability){
+			return parent1;
+		}
+		Individual child = new Individual();
+		int crossoverPointOneT = Parameters.rnd.nextInt(parent1.transitionStrategy.length);
+		int crossoverPointTwoT = Parameters.rnd.nextInt(parent1.transitionStrategy.length);
+		if(crossoverPointOneT < crossoverPointTwoT){
+			int t = crossoverPointOneT;
+			crossoverPointOneT = crossoverPointTwoT;
+			crossoverPointTwoT = t;
+		}
+
+		int crossoverPointOneP = Parameters.rnd.nextInt(parent1.pacingStrategy.length);
+		int crossoverPointTwoP = Parameters.rnd.nextInt(parent1.pacingStrategy.length);
+		if(crossoverPointOneP < crossoverPointTwoP){
+			int t = crossoverPointOneP;
+			crossoverPointOneP = crossoverPointTwoP;
+			crossoverPointTwoP = t;
+		}
+		for(int i = 0; i < crossoverPointOneP; i++){
+			child.pacingStrategy[i] = parent1.pacingStrategy[i];
+		}
+		for(int i = crossoverPointOneP; i < crossoverPointTwoP; i++){
+			child.pacingStrategy[i] = parent2.pacingStrategy[i];
+		}
+		for(int i = crossoverPointTwoP; i < parent1.pacingStrategy.length; i++){
+			child.pacingStrategy[i] = parent1.pacingStrategy[i];
+		}
+
+
+		for(int i = 0; i < crossoverPointOneT; i++){
+			child.transitionStrategy[i] = parent1.transitionStrategy[i];
+		}
+		for(int i = crossoverPointOneT; i < crossoverPointTwoT; i++){
+			child.transitionStrategy[i] = parent2.transitionStrategy[i];
+		}
+		for(int i = crossoverPointTwoT; i < parent1.transitionStrategy.length; i++){
+			child.transitionStrategy[i] = parent1.transitionStrategy[i];
+		}
+		return child;
+	}
 
 	/**
 	 * Returns a COPY of the individual selected using tournament selection
@@ -137,19 +208,52 @@ public class EA implements Runnable{
 		}
 		return getBest(candidates).copy();
 	}
+
+
 	private Individual rouletteSelection(){
 		double fitnessSum = 0;
 		for(int i =0; i<population.size();i++){
 			fitnessSum += population.get(i).getFitness();
 		}
+		//random pointer in our fitness sum (the specific number points to the individual that is at that location in the roulette)
 		int randNumber = Parameters.rnd.nextInt((int)fitnessSum);
 		int currentSum = 0;
-		int index =0;
+		int index = 0;
+		//spin the wheel until we meet the pointer set
 		while(currentSum < randNumber && index < population.size()){
 			currentSum += population.get(index).getFitness();
 			index++;
 		}
-		return population.get(index -1).copy();
+		if(index != 0)
+			index --;
+		return population.get(index).copy();
+	}
+
+	//selecting two parents using Stochastic Universal Sampling
+	private ArrayList<Individual> stochasticSelection(){
+		double fitnessSum = 0;
+		ArrayList<Individual> selection = new ArrayList<Individual>();
+		for(int i =0; i<population.size();i++){
+			fitnessSum += population.get(i).getFitness();
+		}
+		int randNumber = Parameters.rnd.nextInt((int)fitnessSum);
+		int currentSum = 0;
+		int index = 0;
+		int indexTwo = 0;
+		while(currentSum < randNumber && index < population.size()){
+			currentSum += population.get(index).getFitness();
+			index++;
+		}
+		if(index != 0)
+			index--;
+		if(index > population.size()/2) {
+			indexTwo = (population.size() + index) - population.size();
+		}else{
+			indexTwo = index + population.size()/2 -1;
+		}
+		selection.add(population.get(index).copy());
+		selection.add(population.get(indexTwo).copy());
+		return selection;
 	}
 
 	private Individual getBest(ArrayList<Individual> aPopulation) {

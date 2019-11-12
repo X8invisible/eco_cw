@@ -21,7 +21,7 @@ public class Parameters {
 	public static double mutationProbability = 0.5;
 	public static double crossoverProbability = 1.0;
 	
-	public static int maxIterations = 300;
+	public static int maxIterations = 1000;
 	
 	
 }
