@@ -17,6 +17,8 @@ package ea;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import teamPursuit.TeamPursuit;
@@ -44,19 +46,43 @@ public class EA implements Runnable{
 		initialisePopulation();	
 		System.out.println("finished init pop");
 		iteration = 0;
+		boolean rank = false;
+		//used for rank selection swap, if the population stagnates for a number of generations, switch to rank
+		double bestFit = getBest(population).getFitness();
+		int count = 0;
 		while(iteration < Parameters.maxIterations){
 			iteration++;
-			Individual parent1 = rouletteSelection();
-			Individual parent2 = rouletteSelection();
+			Individual parent1, parent2;
+			if (rank){
+				parent1 = rankSelection();
+				parent2 = rankSelection();
+			}else{
+				parent1 = tournamentSelection();
+				parent2 = rouletteSelection();
+			}
+
 			//ArrayList<Individual> parents = stochasticSelection();
 			//Individual parent1 = parents.get(0);
 			//Individual parent2 = parents.get(1);
-			Individual child = crossover(parent1, parent2);
+			Individual child = uniformCrossover(parent1, parent2);
 			//Individual child = twoCrossover(parent1, parent2);
 			child = mutate(child);
 			child.evaluate(teamPursuit);
 			replace(child);
 			printStats();
+			if(getBest(population).getFitness() == bestFit && !rank){
+				count++;
+			}else{
+				bestFit = getBest(population).getFitness();
+				count =0;
+			}
+
+			if(count >200){
+				System.out.println("switching selection");
+				count = 0;
+				rank = !rank;
+			}
+
 		}						
 		Individual best = getBest(population);
 		best.print();
@@ -228,7 +254,43 @@ public class EA implements Runnable{
 			index --;
 		return population.get(index).copy();
 	}
-
+	private Individual rankSelection(){
+		ArrayList<Individual> sortedPop = new ArrayList<Individual>(population);
+		//sorts population by fitness
+		Collections.sort(sortedPop, new Comparator<Individual>() {
+			@Override
+			public int compare(Individual o1, Individual o2) {
+				if(o1.getFitness() > o2.getFitness()) {
+					return -1;
+				} else if(o1.getFitness() < o2.getFitness()) {
+					return 1;
+				}
+				return 0;
+			}
+		});
+		//initialise with biggest fitness rank (rank 1 is best fitness, rank 20 is lowest)
+		int fitnessSum = 1;
+		int currentRank =1;
+		//calculate the sum of the ranks
+		for(int i = sortedPop.size()-2; i > 0; i--){
+			if(sortedPop.get(i).getFitness() != sortedPop.get(i+1).getFitness()){
+				currentRank++;
+			}
+			fitnessSum+=currentRank;
+		}
+		//random pointer in our fitness sum (the specific number points to the individual that is at that location in the roulette)
+		int randNumber = Parameters.rnd.nextInt(fitnessSum);
+		int currentSum = 0;
+		int index = 0;
+		//spin the wheel until we meet the pointer set
+		while(currentSum < randNumber && index < sortedPop.size()){
+			currentSum += sortedPop.get(index).getFitness();
+			index++;
+		}
+		if(index != 0)
+			index --;
+		return sortedPop.get(index).copy();
+	}
 	//selecting two parents using Stochastic Universal Sampling
 	private ArrayList<Individual> stochasticSelection(){
 		double fitnessSum = 0;
