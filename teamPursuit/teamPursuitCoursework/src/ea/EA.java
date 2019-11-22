@@ -16,10 +16,9 @@ package ea;
  */
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import teamPursuit.TeamPursuit;
 import teamPursuit.WomensTeamPursuit;
@@ -30,6 +29,7 @@ public class EA implements Runnable{
 	public static TeamPursuit teamPursuit = new WomensTeamPursuit(); 
 	
 	private ArrayList<Individual> population = new ArrayList<Individual>();
+	private ArrayList<Individual> population2;
 	private int iteration = 0;
 	
 	public EA() {
@@ -40,61 +40,141 @@ public class EA implements Runnable{
 	public static void main(String[] args) {
 		EA ea = new EA();
 		ea.run();
+//		for (int i = 100; i<1000; i+=100) {
+//			Parameters.maxIterations = i;
+//
+//		}
 	}
 
 	public void run() {
-		initialisePopulation();	
+		initialisePopulation();
+
 		System.out.println("finished init pop");
+		//singleIsland();
+		twoIsland();
+		Individual best = getBest(population);
+		best.print();
+//		try {
+//
+//			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("rouletteRank1.txt", true)));
+//			String s = Parameters.maxIterations + " " + best.getFitness();
+//			writer.println(s);
+//			writer.println();
+//			writer.close();
+//		}catch (IOException e){
+//			e.printStackTrace();
+//		}
+		
+	}
+
+	private void twoIsland(){
+		population2 = new ArrayList<>(population); //second island population, starts identical
+		initialisePopulation();
 		iteration = 0;
-		boolean rank = false;
-		//used for rank selection swap, if the population stagnates for a number of generations, switch to rank
+		double bestFit = getBest(population).getFitness();
+		while(iteration < Parameters.maxIterations){
+			iteration++;
+			Individual i1Parent1, i1Parent2, i2Parent1, i2Parent2;
+//			i1Parent1 = rankSelection();
+//			i1Parent2 = rankSelection();
+			i1Parent1 = rouletteSelection(population);
+			i1Parent2 = rouletteSelection(population);
+
+			i2Parent1 = tournamentSelection(population2);
+			i2Parent2 = tournamentSelection(population2);
+
+//			ArrayList<Individual> parents = stochasticSelection();
+//			i1Parent1 = parents.get(0);
+//			i1Parent2 = parents.get(1);
+
+			//ArrayList<Individual> parents = stochasticSelection();
+			//Individual parent1 = parents.get(0);
+			//Individual parent2 = parents.get(1);
+			Individual child = twoCrossover(i1Parent1, i1Parent2);
+			Individual child2 = uniformCrossover(i2Parent1, i2Parent2);
+			//Individual child = crossover(parent1, parent2);
+			child = mutateTwo(child);
+			child2 = mutate(child2);
+			child.evaluate(teamPursuit);
+			child2.evaluate(teamPursuit);
+			replace(child,population);
+			replace(child2, population2);
+			System.out.println("Generation: "+ iteration);
+			printStats("Island1 Rou: ", population);
+			printStats("Island2 Tou: ", population2);
+			if(iteration % 40 ==0){
+				swapIslandPopulation();
+			}
+		}
+	}
+
+	private void swapIslandPopulation(){
+		for(int i= 0; i<3;i++){
+			Individual p1 = rouletteSelection(population);
+			Individual p2 = rouletteSelection(population2);
+			int idx1 = Parameters.rnd.nextInt(population.size());
+			int idx2 = Parameters.rnd.nextInt(population2.size());
+			population.set(idx1, p2);
+			population2.set(idx2, p1);
+		}
+//		Individual t1 = getBest(population).copy();
+//		Individual t2 = getBest(population2).copy();
+//		population.set(idx1, t2);
+//		population2.set(idx2,t1);
+		System.out.println("swapped");
+	}
+
+	private void singleIsland(){
+		iteration = 0;
+		boolean rank = false; //used for rank selection swap, if the population stagnates for a number of generations, switch to rank
 		double bestFit = getBest(population).getFitness();
 		int count = 0;
 		while(iteration < Parameters.maxIterations){
 			iteration++;
 			Individual parent1, parent2;
-			if (rank){
+			if (false){
 				parent1 = rankSelection();
 				parent2 = rankSelection();
 			}else{
-				parent1 = tournamentSelection();
-				parent2 = rouletteSelection();
+//				parent1 = rouletteSelection();
+//				parent2 = rouletteSelection();
+				parent1 = tournamentSelection(population);
+				parent2 = tournamentSelection(population);
+//				ArrayList<Individual> parents = stochasticSelection();
+//				parent1 = parents.get(0);
+//				parent2 = parents.get(1);
 			}
 
 			//ArrayList<Individual> parents = stochasticSelection();
 			//Individual parent1 = parents.get(0);
 			//Individual parent2 = parents.get(1);
 			Individual child = uniformCrossover(parent1, parent2);
-			//Individual child = twoCrossover(parent1, parent2);
+			//Individual child = crossover(parent1, parent2);
 			child = mutate(child);
+			//System.out.print(rank);
 			child.evaluate(teamPursuit);
-			replace(child);
-			printStats();
-			if(getBest(population).getFitness() == bestFit && !rank){
+			replace(child, population);
+			printStats("", population);
+			if(getBest(population).getFitness() == bestFit){
 				count++;
 			}else{
 				bestFit = getBest(population).getFitness();
 				count =0;
 			}
 
-			if(count >200){
+			if(count >1000){
 				System.out.println("switching selection");
 				count = 0;
 				rank = !rank;
 			}
-
-		}						
-		Individual best = getBest(population);
-		best.print();
-		
+		}
 	}
-
-	private void printStats() {		
-		System.out.println("" + iteration + "\t" + getBest(population) + "\t" + getWorst(population));		
+	private void printStats(String isl, ArrayList<Individual> population) {
+		System.out.println(isl + "\t" + getBest(population) + "\t" + getWorst(population));
 	}
 
 
-	private void replace(Individual child) {
+	private void replace(Individual child, ArrayList<Individual> population) {
 		Individual worst = getWorst(population);
 		if(child.getFitness() < worst.getFitness()){
 			int idx = population.indexOf(worst);
@@ -121,11 +201,9 @@ public class EA implements Runnable{
 
 			//mutate the pacing by swapping two values in the chromosome
 			for(int i = 0; i< mutationRate;i++){
+				//int r = Parameters.rnd.nextInt(20)-10;
 				int index = Parameters.rnd.nextInt(child.pacingStrategy.length);
-				int index2 = Parameters.rnd.nextInt(child.pacingStrategy.length);
-				int p = child.pacingStrategy[index];
-				child.pacingStrategy[index] = child.pacingStrategy[index2];
-				child.pacingStrategy[index2] = p;
+				child.pacingStrategy[index] = Parameters.rnd.nextInt(550-200) +200;;
 			}
 			
 		
@@ -133,6 +211,34 @@ public class EA implements Runnable{
 		return child;
 	}
 
+
+	private Individual mutateTwo(Individual child) {
+		if(Parameters.rnd.nextDouble() > Parameters.mutationProbability){
+			return child;
+		}
+
+		// choose how many elements to alter
+		int mutationRate = 1 + Parameters.rnd.nextInt(Parameters.mutationRateMax);
+
+		// mutate the transition strategy
+
+		//mutate the transition strategy by flipping boolean value
+		for(int i = 0; i < mutationRate; i++){
+			int index = Parameters.rnd.nextInt(child.transitionStrategy.length);
+			child.transitionStrategy[index] = !child.transitionStrategy[index];
+		}
+
+		//mutate the pacing by swapping two values in the chromosome
+		for(int i = 0; i< mutationRate;i++){
+			int r = Parameters.rnd.nextInt(20)-10;
+			int index = Parameters.rnd.nextInt(child.pacingStrategy.length);
+			child.pacingStrategy[index] +=r;
+		}
+
+
+
+		return child;
+	}
 
 	private Individual crossover(Individual parent1, Individual parent2) {
 		if(Parameters.rnd.nextDouble() > Parameters.crossoverProbability){
@@ -195,7 +301,7 @@ public class EA implements Runnable{
 
 		int crossoverPointOneP = Parameters.rnd.nextInt(parent1.pacingStrategy.length);
 		int crossoverPointTwoP = Parameters.rnd.nextInt(parent1.pacingStrategy.length);
-		if(crossoverPointOneP < crossoverPointTwoP){
+		if(crossoverPointOneP > crossoverPointTwoP){
 			int t = crossoverPointOneP;
 			crossoverPointOneP = crossoverPointTwoP;
 			crossoverPointTwoP = t;
@@ -227,7 +333,7 @@ public class EA implements Runnable{
 	 * Returns a COPY of the individual selected using tournament selection
 	 * @return
 	 */
-	private Individual tournamentSelection() {
+	private Individual tournamentSelection(ArrayList<Individual> population) {
 		ArrayList<Individual> candidates = new ArrayList<Individual>();
 		for(int i = 0; i < Parameters.tournamentSize; i++){
 			candidates.add(population.get(Parameters.rnd.nextInt(population.size())));
@@ -236,23 +342,36 @@ public class EA implements Runnable{
 	}
 
 
-	private Individual rouletteSelection(){
+	private Individual rouletteSelection(ArrayList<Individual> population){
+		ArrayList<Individual> sortedPop = new ArrayList<Individual>(population);
+		//sorts population by fitness
+		Collections.sort(sortedPop, new Comparator<Individual>() {
+			@Override
+			public int compare(Individual o1, Individual o2) {
+				if(o1.getFitness() > o2.getFitness()) {
+					return -1;
+				} else if(o1.getFitness() < o2.getFitness()) {
+					return 1;
+				}
+				return 0;
+			}
+		});
 		double fitnessSum = 0;
 		for(int i =0; i<population.size();i++){
-			fitnessSum += population.get(i).getFitness();
+			fitnessSum += (1/population.get(i).getFitness())+1;
 		}
 		//random pointer in our fitness sum (the specific number points to the individual that is at that location in the roulette)
 		int randNumber = Parameters.rnd.nextInt((int)fitnessSum);
-		int currentSum = 0;
+		double currentSum = 0;
 		int index = 0;
 		//spin the wheel until we meet the pointer set
-		while(currentSum < randNumber && index < population.size()){
-			currentSum += population.get(index).getFitness();
+		while(currentSum < randNumber && index < sortedPop.size()){
+			currentSum += (1/sortedPop.get(index).getFitness())+1;
 			index++;
 		}
 		if(index != 0)
 			index --;
-		return population.get(index).copy();
+		return sortedPop.get(index).copy();
 	}
 	private Individual rankSelection(){
 		ArrayList<Individual> sortedPop = new ArrayList<Individual>(population);
@@ -293,28 +412,41 @@ public class EA implements Runnable{
 	}
 	//selecting two parents using Stochastic Universal Sampling
 	private ArrayList<Individual> stochasticSelection(){
+		ArrayList<Individual> sortedPop = new ArrayList<Individual>(population);
+		//sorts population by fitness
+		Collections.sort(sortedPop, new Comparator<Individual>() {
+			@Override
+			public int compare(Individual o1, Individual o2) {
+				if(o1.getFitness() > o2.getFitness()) {
+					return -1;
+				} else if(o1.getFitness() < o2.getFitness()) {
+					return 1;
+				}
+				return 0;
+			}
+		});
 		double fitnessSum = 0;
 		ArrayList<Individual> selection = new ArrayList<Individual>();
-		for(int i =0; i<population.size();i++){
-			fitnessSum += population.get(i).getFitness();
+		for(int i =0; i<sortedPop.size();i++){
+			fitnessSum += sortedPop.get(i).getFitness();
 		}
 		int randNumber = Parameters.rnd.nextInt((int)fitnessSum);
 		int currentSum = 0;
 		int index = 0;
 		int indexTwo = 0;
-		while(currentSum < randNumber && index < population.size()){
-			currentSum += population.get(index).getFitness();
+		while(currentSum < randNumber && index < sortedPop.size()){
+			currentSum += sortedPop.get(index).getFitness();
 			index++;
 		}
 		if(index != 0)
 			index--;
-		if(index > population.size()/2) {
-			indexTwo = (population.size() + index) - population.size();
+		if(index > sortedPop.size()/2) {
+			indexTwo = (sortedPop.size() + index) - sortedPop.size();
 		}else{
-			indexTwo = index + population.size()/2 -1;
+			indexTwo = index + sortedPop.size()/2 -1;
 		}
-		selection.add(population.get(index).copy());
-		selection.add(population.get(indexTwo).copy());
+		selection.add(sortedPop.get(index).copy());
+		selection.add(sortedPop.get(indexTwo).copy());
 		return selection;
 	}
 
@@ -333,7 +465,7 @@ public class EA implements Runnable{
 	private Individual getWorst(ArrayList<Individual> aPopulation) {
 		double worstFitness = 0;
 		Individual worst = null;
-		for(Individual individual : population){
+		for(Individual individual : aPopulation){
 			if(individual.getFitness() > worstFitness || worst == null){
 				worst = individual;
 				worstFitness = worst.getFitness();
@@ -349,6 +481,7 @@ public class EA implements Runnable{
 	}
 
 	private void initialisePopulation() {
+		population.clear();
 		while(population.size() < Parameters.popSize){
 			Individual individual = new Individual();
 			individual.initialise();			

@@ -23,7 +23,7 @@ public class Individual {
 		}
 		
 		for(int i = 0; i < pacingStrategy.length; i++){
-            pacingStrategy[i] = Parameters.rnd.nextInt(200) +300;
+            pacingStrategy[i] = Parameters.rnd.nextInt(550-200) +200;
 			//pacingStrategy[i] = Parameters.DEFAULT_WOMENS_PACING_STRATEGY[i];
 		}
 		
@@ -68,7 +68,7 @@ public class Individual {
 		}
 		return fitness;
 	}
-	
+
 	
 	
 	public Individual copy(){
