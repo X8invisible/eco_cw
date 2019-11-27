@@ -1,0 +1,87 @@
+1000 513,433,478,415,531,494,227,537,402,402,385,373,353,374,351,376,529,328,460,360,536,263,312,true,false,true,true,false,true,true,false,false,true,true,true,false,true,false,true,true,true,true,false,true,false,
+215.11600000001252
+
+1000 494,311,281,366,241,245,542,542,366,406,454,341,443,479,344,388,422,417,406,477,481,503,351,true,false,true,true,true,false,true,false,false,true,false,true,true,false,true,true,true,true,false,true,true,false,
+217.73800000001148
+
+1000 525,394,511,481,437,473,262,256,205,305,331,354,448,352,546,463,334,471,472,479,493,410,224,true,true,false,false,true,false,true,false,false,true,false,true,false,true,true,true,false,false,true,false,true,false,
+217.3920000000107
+
+1000 504,532,538,546,450,354,328,336,308,527,484,428,538,324,366,297,387,434,535,200,267,453,378,true,true,true,false,true,false,true,true,true,true,false,true,false,true,false,true,false,true,false,false,true,true,
+214.05200000001327
+
+1000 421,417,494,520,453,385,549,511,474,224,386,342,444,474,471,437,282,407,380,353,325,459,441,false,false,false,true,true,true,true,false,false,true,false,true,false,false,true,false,false,true,false,false,false,false,
+216.0520000000139
+
+1000 468,296,348,274,326,281,517,233,484,438,409,379,497,387,404,483,545,535,393,540,509,271,549,true,true,true,false,false,false,true,true,false,false,false,true,false,false,false,true,true,true,true,false,false,false,
+216.81200000001232
+
+1000 449,407,388,513,471,336,527,239,430,436,525,455,440,249,423,289,473,480,491,507,229,326,302,true,true,true,true,true,false,true,false,true,true,false,true,true,false,false,false,true,true,true,true,false,false,
+216.89600000001306
+
+1000 483,521,339,525,401,381,289,466,273,381,300,530,503,468,300,502,491,344,427,466,412,340,233,false,false,false,true,true,true,true,false,false,true,false,false,false,true,true,true,true,false,true,false,false,true,
+215.7820000000126
+
+1000 503,456,275,540,298,343,518,392,357,355,443,276,255,445,498,416,426,430,502,246,500,455,290,false,false,true,false,false,true,true,true,true,false,true,false,true,true,false,false,false,true,false,true,false,false,
+216.82600000001153
+
+1000 505,252,361,500,490,490,529,282,480,507,412,498,448,326,297,356,417,435,394,501,297,317,272,false,true,true,false,true,false,true,false,true,true,true,false,true,true,false,true,true,true,false,true,false,false,
+215.96000000001214
+
+1000 523,296,398,535,424,496,438,532,411,320,217,530,299,332,489,240,524,298,522,274,398,493,331,false,true,true,true,true,true,true,true,false,true,true,true,false,true,false,true,true,false,false,true,false,false,
+216.1620000000117
+
+1000 533,441,429,378,396,487,490,379,222,408,301,367,339,521,445,487,211,385,518,495,231,481,334,true,false,true,false,true,true,true,false,true,false,true,true,false,false,false,true,false,false,true,false,false,false,
+215.9620000000113
+
+1000 418,306,544,449,270,408,314,498,478,483,447,404,306,352,532,465,341,491,530,317,545,249,211,true,true,true,false,false,false,false,false,true,true,false,true,true,true,true,true,true,true,true,false,true,false,
+218.04600000001332
+
+1000 416,333,213,494,542,408,271,356,473,413,535,367,458,395,483,501,448,346,410,294,512,424,508,true,true,true,true,true,true,true,true,true,false,true,true,false,false,true,false,false,true,false,false,true,false,
+216.2680000000143
+
+1000 444,482,366,543,282,269,281,522,448,503,548,483,203,417,385,205,532,528,322,421,218,463,527,true,true,false,true,true,true,true,false,true,true,true,false,true,true,false,false,true,false,false,false,true,false,
+217.2380000000129
+
+1000 545,392,364,406,420,367,300,541,415,417,293,542,261,235,516,363,486,316,499,542,437,504,212,false,true,true,false,false,true,false,true,true,true,true,true,false,true,false,false,true,true,true,true,false,true,
+215.32800000001166
+
+1000 544,547,331,418,451,334,432,396,494,481,452,412,216,450,330,456,261,484,396,320,434,405,245,true,true,false,false,false,true,false,false,false,true,true,false,false,true,true,true,false,true,true,false,true,false,
+216.186000000011
+
+1000 529,357,404,348,306,466,390,296,521,431,544,326,386,407,241,490,527,437,330,436,485,297,413,true,true,false,true,true,true,true,true,true,true,true,false,true,true,true,true,false,true,false,false,false,true,
+216.0820000000117
+
+1000 492,427,436,421,460,419,351,268,484,500,441,537,299,528,353,401,488,281,364,399,421,391,266,true,false,false,true,false,true,true,true,false,true,true,true,true,false,true,false,true,false,false,true,true,true,
+215.8080000000126
+
+1000 549,456,534,418,430,384,422,245,385,502,342,510,428,278,212,480,520,373,500,328,399,363,269,true,false,true,false,true,true,false,false,false,true,true,false,true,true,false,false,false,true,false,true,true,false,
+215.29400000001144
+
+1000 527,515,279,252,408,205,347,537,510,426,483,220,453,371,267,471,519,214,546,525,329,303,321,true,true,true,true,true,false,true,false,true,true,false,false,true,true,true,true,false,true,false,false,true,false,
+217.38400000001087
+
+1000 425,437,288,449,479,516,481,544,452,341,210,414,477,426,209,439,444,371,473,542,336,316,387,true,true,true,false,false,true,true,true,false,true,false,true,true,true,false,false,true,false,false,false,false,false,
+216.9320000000135
+
+1000 432,358,421,524,268,549,327,427,530,299,459,546,439,493,439,441,445,487,372,388,348,227,287,true,false,false,true,false,true,false,false,true,true,true,false,true,true,true,false,true,false,true,false,false,false,
+215.700000000014
+
+1000 459,504,400,429,322,325,463,368,513,517,464,509,372,291,385,461,357,459,493,351,326,425,277,false,true,true,true,true,false,false,true,true,true,true,false,true,false,false,true,true,true,true,false,true,false,
+215.41000000001364
+
+1000 518,225,485,321,439,487,257,348,461,477,390,498,318,510,338,366,393,530,378,293,536,517,200,true,true,true,true,true,false,false,true,true,true,true,false,true,true,true,false,true,true,true,true,false,false,
+216.38200000001183
+
+1000 478,295,487,532,446,458,362,394,271,542,409,388,390,315,367,387,443,306,369,518,503,307,428,true,false,true,false,true,false,true,false,true,false,true,false,false,true,false,false,true,true,true,true,false,false,
+215.86000000001263
+
+1000 449,532,499,430,530,354,485,421,489,280,524,218,394,368,335,525,362,523,261,339,452,228,426,false,true,false,true,false,false,false,true,false,true,false,true,true,false,false,true,false,true,true,true,false,true,
+216.43400000001316
+
+1000 538,545,517,355,535,476,548,476,209,341,423,246,462,328,434,445,447,430,276,284,511,201,323,true,false,true,false,true,true,true,false,true,true,false,false,true,false,false,false,true,false,false,false,true,true,
+215.9160000000112
+
+1000 461,507,358,355,549,406,250,457,259,452,247,388,521,470,357,290,363,547,479,410,330,470,234,true,false,true,true,false,true,true,false,false,false,true,false,true,false,false,false,true,true,true,true,false,false,
+217.7160000000121
+
