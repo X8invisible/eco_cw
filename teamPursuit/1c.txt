@@ -1,0 +1,6 @@
+1000 518,448,515,514,201,339,435,382,503,486,305,280,280,367,530,473,335,491,306,517,311,524,314,true,true,true,true,true,false,true,true,false,false,true,false,true,true,true,true,false,true,false,true,false,false,
+215.63400000001204
+
+1000 541,465,503,373,269,374,532,351,361,502,386,445,439,317,533,419,295,263,219,524,445,492,256,false,true,true,false,true,true,false,true,false,false,false,true,false,false,true,true,false,false,false,true,true,false,
+216.63000000001077
+

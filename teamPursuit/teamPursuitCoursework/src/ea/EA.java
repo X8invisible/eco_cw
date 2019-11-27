@@ -40,25 +40,43 @@ public class EA implements Runnable{
 	public static void main(String[] args) {
 		EA ea = new EA();
 		ea.run();
-//		for (int i = 1000; i<20000; i+=1000) {
-//			Parameters.maxIterations = i;
 
-//		}
 	}
 
 	public void run() {
 
-		for (int i =0;i<4;i++){
-			initialisePopulation();
-
-			System.out.println("finished init pop");
-			singleIsland(i);
+//		for (int i =0;i<3;i++){
+//			initialisePopulation();
+//
+//			System.out.println("finished init pop");
+//			singleIsland(i,0);
+//			Individual best = getBest(population);
+//			best.print();
+//
+//			try {
+//				PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(i+"iter.txt", true)));
+//				String s = Parameters.maxIterations + " " + best.write();
+//				writer.println(s);
+//				writer.println();
+//				writer.close();
+//			}catch (IOException e){
+//				e.printStackTrace();
+//			}
+//		}
+		initialisePopulation();
+		population2 = new ArrayList<>(population);
+		//tournament
+		for (int i = 100; i<1000; i+=100) {
+			population.clear();
+			population = new ArrayList<>(population2);
+			Parameters.maxIterations = i;
+			singleIsland(0,0);
 			Individual best = getBest(population);
 			best.print();
-
 			try {
-				PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(i+".txt", true)));
-				String s = Parameters.maxIterations + " " + best.write();
+
+				PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("iterations.txt", true)));
+				String s = Parameters.maxIterations + " " + best.getFitness();
 				writer.println(s);
 				writer.println();
 				writer.close();
@@ -66,27 +84,15 @@ public class EA implements Runnable{
 				e.printStackTrace();
 			}
 		}
-//		//tournament
-//		singleIsland(0);
 //		//rank
-//		singleIsland(1);
+//		singleIsland(1,0);
 //		//roulette
-//		singleIsland(2);
+//		singleIsland(2,0);
 //		//stochastic
-//		singleIsland(3);
-		//twoIsland();
-//		Individual best = getBest(population);
-//		best.print();
-//		try {
-//
-//			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("rouletteRank1.txt", true)));
-//			String s = Parameters.maxIterations + " " + best.getFitness();
-//			writer.println(s);
-//			writer.println();
-//			writer.close();
-//		}catch (IOException e){
-//			e.printStackTrace();
-//		}
+//		singleIsland(3,0);
+//		twoIsland();
+		Individual best = getBest(population);
+		best.print();
 		
 	}
 
@@ -143,7 +149,8 @@ public class EA implements Runnable{
 		System.out.println("swapped");
 	}
 
-	private void singleIsland(int s){
+	//s for selection mode, c for crossover mode
+	private void singleIsland(int s, int c){
 		iteration = 0;
 		boolean rank = false; //used for rank selection swap, if the population stagnates for a number of generations, switch to rank
 		double bestFit = getBest(population).getFitness();
@@ -152,10 +159,6 @@ public class EA implements Runnable{
 			iteration++;
 			Individual parent1, parent2;
 			switch (s){
-				case 0:
-					parent1 = tournamentSelection(population);
-					parent2 = tournamentSelection(population);
-					break;
 				case 1:
 					parent1 = rankSelection(population);
 					parent2 = rankSelection(population);
@@ -174,10 +177,19 @@ public class EA implements Runnable{
 					parent2 = tournamentSelection(population);
 					break;
 			}
-			Individual child = uniformCrossover(parent1, parent2);
-			//Individual child = crossover(parent1, parent2);
+			Individual child;
+			switch(c){
+				case 1:
+					child = crossover(parent1, parent2);
+					break;
+				case 2:
+					child = twoCrossover(parent1,parent2);
+					break;
+				default:
+					child = uniformCrossover(parent1, parent2);
+					break;
+			}
 			child = mutate(child);
-			//System.out.print(rank);
 			child.evaluate(teamPursuit);
 			replace(child, population);
 			printStats(iteration+" ", population);

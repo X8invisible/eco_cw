@@ -1,3 +1,6 @@
 20000 546,541,366,345,392,386,443,508,368,224,507,461,425,499,528,528,336,268,529,373,436,527,508,true,true,true,false,true,true,true,false,true,false,true,false,true,false,false,true,true,true,true,false,true,false,
 211.15600000001393
 
+1000 526,476,354,233,549,364,326,534,442,466,423,462,315,438,429,211,330,515,493,452,436,477,402,false,true,false,true,true,false,false,true,true,true,false,true,true,true,true,false,true,false,true,true,false,false,
+214.2860000000126
+

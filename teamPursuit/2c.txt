@@ -1,0 +1,4 @@
+1000 488,311,254,472,419,489,403,377,504,421,546,541,408,341,202,449,358,537,274,472,420,495,411,false,false,true,false,true,false,false,true,true,false,true,true,true,true,true,false,false,true,false,false,true,false,
+215.204000000012771000 547,224,378,543,511,516,488,411,504,239,535,466,309,419,337,425,442,365,273,216,542,469,369,false,true,false,true,false,true,false,true,true,true,true,true,true,true,true,true,false,false,true,true,false,false,
+214.50000000001208
+
