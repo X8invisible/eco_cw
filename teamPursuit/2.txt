@@ -1,0 +1,3 @@
+20000 546,541,366,345,392,386,443,508,368,224,507,461,425,499,528,528,336,268,529,373,436,527,508,true,true,true,false,true,true,true,false,true,false,true,false,true,false,false,true,true,true,true,false,true,false,
+211.15600000001393
+

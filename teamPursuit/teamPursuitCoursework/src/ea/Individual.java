@@ -8,7 +8,7 @@ public class Individual {
 	boolean[] transitionStrategy = new boolean[22] ;
 	int[] pacingStrategy = new int[23];
 	
-	SimulationResult result = null;
+	public SimulationResult result = null;
 	public Individual() {		
 		
 	}
@@ -58,13 +58,13 @@ public class Individual {
 	
 	public double getFitness(){
 		double fitness = 10000;
-		double distMade;
-		if (result == null){
-			return fitness;
-		}
-		else{
-			distMade = result.getProportionCompleted();
-			fitness = result.getFinishTime() + (100-(distMade*100));
+		double distMade = result.getProportionCompleted();
+		distMade = (100-(distMade*100));
+
+		if(Double.isInfinite(result.getFinishTime())){
+			return (fitness + distMade);
+		}else{
+			fitness = result.getFinishTime();
 		}
 		return fitness;
 	}
@@ -105,5 +105,23 @@ public class Individual {
 			}
 		}
 		System.out.println("\r\n" + this);
+	}
+
+	public String write() {
+		String s = "";
+		for(int i : pacingStrategy){
+			s+=i+",";
+		}
+		System.out.println();
+		for(boolean b : transitionStrategy){
+			if(b){
+				s+="true,";
+			}else{
+				s+="false,";
+			}
+		}
+		s+=("\r\n" + this);
+
+		return s;
 	}
 }

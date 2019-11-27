@@ -1,0 +1,5 @@
+543,471,541,317,241,539,519,512,398,526,474,542,497,213,344,227,522,397,531,370,525,405,344,
+false,true,false,true,true,false,true,true,false,true,false,false,true,false,false,false,false,true,false,false,false,false,
+211.1280000000137
+
+tournament with uniform, pop 30 and 15 tour size, 10k iterations
