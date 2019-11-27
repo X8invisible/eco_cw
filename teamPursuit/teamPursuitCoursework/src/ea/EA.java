@@ -31,7 +31,8 @@ public class EA implements Runnable{
 	private ArrayList<Individual> population = new ArrayList<Individual>();
 	private ArrayList<Individual> population2;
 	private int iteration = 0;
-	
+	private int selection = 0;
+
 	public EA() {
 		
 	}
@@ -39,51 +40,44 @@ public class EA implements Runnable{
 	
 	public static void main(String[] args) {
 		EA ea = new EA();
-		ea.run();
+		double sum;
+		Individual best = new Individual();
+		double bestFitness = 9999;
+		//loops through different selection methods
+		for(int j = 0; j<4;j++){
+			ea.selection = j;
+			sum = 0;
+			//run test 30 times
+			for(int i = 0; i<30; i++) {
+				System.out.println(i);
+				ea.run();
+				Individual t = ea.getBest(ea.population);
+				sum += t.getFitness();
+				if(t.getFitness() < bestFitness){
+					best = t;
+					bestFitness = best.getFitness();
+				}
+				System.out.println(bestFitness);
+			}
+			ea.writeStats(best.write(),j);
+			ea.writeStats("average: "+ sum/30.0, j);
+		}
+		//ea.run();
 
 	}
 
 	public void run() {
 
-//		for (int i =0;i<3;i++){
-//			initialisePopulation();
-//
-//			System.out.println("finished init pop");
-//			singleIsland(i,0);
-//			Individual best = getBest(population);
-//			best.print();
-//
-//			try {
-//				PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(i+"iter.txt", true)));
-//				String s = Parameters.maxIterations + " " + best.write();
-//				writer.println(s);
-//				writer.println();
-//				writer.close();
-//			}catch (IOException e){
-//				e.printStackTrace();
-//			}
-//		}
 		initialisePopulation();
-		population2 = new ArrayList<>(population);
-		//tournament
-		for (int i = 100; i<1000; i+=100) {
-			population.clear();
-			population = new ArrayList<>(population2);
-			Parameters.maxIterations = i;
-			singleIsland(0,0);
-			Individual best = getBest(population);
-			best.print();
-			try {
+		System.out.println("finished init pop");
 
-				PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("iterations.txt", true)));
-				String s = Parameters.maxIterations + " " + best.getFitness();
-				writer.println(s);
-				writer.println();
-				writer.close();
-			}catch (IOException e){
-				e.printStackTrace();
-			}
-		}
+		singleIsland(selection,0);
+		Individual best = getBest(population);
+		best.print();
+		//writeStats(best.write(),selection);
+
+		//tournament
+//		singleIsland(0,0);
 //		//rank
 //		singleIsland(1,0);
 //		//roulette
@@ -91,8 +85,8 @@ public class EA implements Runnable{
 //		//stochastic
 //		singleIsland(3,0);
 //		twoIsland();
-		Individual best = getBest(population);
-		best.print();
+//		Individual best = getBest(population);
+//		best.print();
 		
 	}
 
@@ -155,10 +149,11 @@ public class EA implements Runnable{
 		boolean rank = false; //used for rank selection swap, if the population stagnates for a number of generations, switch to rank
 		double bestFit = getBest(population).getFitness();
 		int count = 0;
+		int selection = s;
 		while(iteration < Parameters.maxIterations){
 			iteration++;
 			Individual parent1, parent2;
-			switch (s){
+			switch (selection){
 				case 1:
 					parent1 = rankSelection(population);
 					parent2 = rankSelection(population);
@@ -192,25 +187,38 @@ public class EA implements Runnable{
 			child = mutate(child);
 			child.evaluate(teamPursuit);
 			replace(child, population);
-			printStats(iteration+" ", population);
-//			if(getBest(population).getFitness() == bestFit){
-//				count++;
-//			}else{
-//				bestFit = getBest(population).getFitness();
-//				count =0;
-//			}
+			printStats(iteration+" "+s+" "+c+" ", population);
 
-//			if(count >1000 && !rank){
-//				System.out.println("switching selection");
-//				count = 0;
-//				rank = !rank;
-//			}
+			if(getBest(population).getFitness() == bestFit){
+				count++;
+			}else{
+				bestFit = getBest(population).getFitness();
+				count =0;
+			}
+
+			if(count >1000 && !rank){
+				System.out.println("switching selection");
+				selection++;
+				count = 0;
+				rank = !rank;
+
+			}
 		}
 	}
 	private void printStats(String isl, ArrayList<Individual> population) {
 		System.out.println(isl + "\t" + getBest(population) + "\t" + getWorst(population));
 	}
-
+	private void writeStats(String best, int i){
+		try {
+			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(i+"Test.txt", true)));
+			String s = Parameters.maxIterations + " " + best;
+			writer.println(s);
+			writer.println();
+			writer.close();
+		}catch (IOException e){
+			e.printStackTrace();
+		}
+	}
 
 	private void replace(Individual child, ArrayList<Individual> population) {
 		Individual worst = getWorst(population);
