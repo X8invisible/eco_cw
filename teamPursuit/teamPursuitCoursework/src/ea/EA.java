@@ -40,29 +40,31 @@ public class EA implements Runnable{
 
 	public static void main(String[] args) {
 		EA ea = new EA();
-		double sum;
-		Individual best = new Individual();
-		double bestFitness = 9999;
-		//loops through different selection methods
-		for(int j = 0; j<3;j++){
-			ea.selection = j;
-			sum = 0;
-			//run test 30 times
-			for(int i = 0; i<30; i++) {
-				System.out.println(i);
-				ea.run();
-				Individual t = ea.getBest(ea.population);
-				sum += t.getFitness();
-				if(t.getFitness() < bestFitness){
-					best = t;
-					bestFitness = best.getFitness();
-				}
-				System.out.println(bestFitness);
-			}
-			ea.writeStats(best.write(),j);
-			ea.writeStats("average: "+ sum/30, j);
-		}
-		//ea.run();
+//		double sum;
+//		Individual best = new Individual();
+//		double bestFitness = 9999;
+//		//loops through different selection methods
+//		for(int j = 0; j<3;j++){
+//			ea.selection = j;
+//			sum = 0;
+//			//run test 30 times
+//			for(int i = 0; i<30; i++) {
+//				System.out.println(i);
+//				ea.run();
+//				Individual t = ea.getBest(ea.population);
+//				sum += t.getFitness();
+//				if(t.getFitness() < bestFitness){
+//					best = t;
+//					bestFitness = best.getFitness();
+//				}
+//				System.out.println(bestFitness);
+//			}
+//			ea.writeStats(best.write(),j);
+//			ea.writeStats("average: "+ sum/30, j);
+//		}
+
+		ea.run();
+
 
 	}
 
@@ -71,7 +73,7 @@ public class EA implements Runnable{
 		initialisePopulation();
 		System.out.println("finished init pop");
 
-		singleIsland(0,selection);
+		singleIsland(0,0);
 
 		//writeStats(best.write(),selection);
 
@@ -94,7 +96,12 @@ public class EA implements Runnable{
 		initialisePopulation();
 		iteration = 0;
 		double bestFit = getBest(population).getFitness();
-		while(iteration < Parameters.maxIterations){
+		long t = System.currentTimeMillis();
+		long end = t + 300000;
+		//run for time
+		while(System.currentTimeMillis() < end){
+			//run for iterations
+		//while(iteration < Parameters.maxIterations){
 			iteration++;
 			Individual i1Parent1, i1Parent2, i2Parent1, i2Parent2;
 //			i1Parent1 = rankSelection();
@@ -146,10 +153,14 @@ public class EA implements Runnable{
 	private void singleIsland(int s, int c){
 		iteration = 0;
 		boolean rank = false; //used for rank selection swap, if the population stagnates for a number of generations, switch to rank
-		double bestFit = getBest(population).getFitness();
 		int count = 0;
 		int selection = s;
-		while(iteration < Parameters.maxIterations){
+		long t = System.currentTimeMillis();
+		long end = t + 300000;
+		//run for time
+		while(System.currentTimeMillis() < end){
+			//run for iterations
+		//while(iteration < Parameters.maxIterations){
 			iteration++;
 			Individual parent1, parent2;
 			switch (selection){
@@ -186,7 +197,7 @@ public class EA implements Runnable{
 			child = mutate(child);
 			child.evaluate(teamPursuit);
 			replace(child, population);
-			printStats(iteration+" "+s+" "+c+" ", population);
+			printStats(iteration+" "+s+" "+c+" "+" "+(end-System.currentTimeMillis()), population);
 
 //			if(getBest(population).getFitness() == bestFit){
 //				count++;
