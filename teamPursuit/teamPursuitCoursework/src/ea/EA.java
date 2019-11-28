@@ -41,10 +41,10 @@ public class EA implements Runnable{
 	public static void main(String[] args) {
 		EA ea = new EA();
 		double sum;
-		Individual best = new Individual();
-		double bestFitness = 9999;
 		//loops through different selection methods
-		for(int j = 0; j<4;j++){
+		for(int j = 2; j<3;j++){
+			Individual best = new Individual();
+			double bestFitness = 9999;
 			ea.selection = j;
 			sum = 0;
 			//run test 30 times
@@ -189,20 +189,20 @@ public class EA implements Runnable{
 			replace(child, population);
 			printStats(iteration+" "+s+" "+c+" ", population);
 
-			if(getBest(population).getFitness() == bestFit){
-				count++;
-			}else{
-				bestFit = getBest(population).getFitness();
-				count =0;
-			}
-
-			if(count >1000 && !rank){
-				System.out.println("switching selection");
-				selection++;
-				count = 0;
-				rank = !rank;
-
-			}
+//			if(getBest(population).getFitness() == bestFit){
+//				count++;
+//			}else{
+//				bestFit = getBest(population).getFitness();
+//				count =0;
+//			}
+//
+//			if(iteration >1000 && !rank){
+//				System.out.println("switching selection");
+//				selection++;
+//				count = 0;
+//				rank = !rank;
+//
+//			}
 		}
 	}
 	private void printStats(String isl, ArrayList<Individual> population) {

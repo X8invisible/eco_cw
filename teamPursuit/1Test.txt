@@ -3,3 +3,9 @@
 
 1000 average: 216.74036666667857
 
+
+1001 544,344,476,521,337,409,374,249,514,549,231,415,490,544,467,537,380,467,318,375,518,258,267,true,false,true,true,false,true,true,false,true,true,true,true,true,false,true,true,false,false,true,true,false,false,
+213.3360000000128
+
+1001 average: 217.11510000001192
+
