@@ -42,9 +42,7 @@ public class EA implements Runnable{
 		EA ea = new EA();
 		double sum;
 		//loops through different selection methods
-		for(int j = 2; j<3;j++){
-			Individual best = new Individual();
-			double bestFitness = 9999;
+		for(int j = 0; j<3;j++){
 			ea.selection = j;
 			sum = 0;
 			//run test 30 times
@@ -60,7 +58,7 @@ public class EA implements Runnable{
 				System.out.println(bestFitness);
 			}
 			ea.writeStats(best.write(),j);
-			ea.writeStats("average: "+ sum/30.0, j);
+			ea.writeStats("average: "+ 2500, j);
 		}
 		//ea.run();
 
@@ -71,9 +69,8 @@ public class EA implements Runnable{
 		initialisePopulation();
 		System.out.println("finished init pop");
 
-		singleIsland(selection,0);
-		Individual best = getBest(population);
-		best.print();
+		singleIsland(2,selection);
+
 		//writeStats(best.write(),selection);
 
 		//tournament
@@ -81,13 +78,13 @@ public class EA implements Runnable{
 //		//rank
 //		singleIsland(1,0);
 //		//roulette
-//		singleIsland(2,0);
+//		singleIsland(0,0);
 //		//stochastic
 //		singleIsland(3,0);
 //		twoIsland();
-//		Individual best = getBest(population);
-//		best.print();
-		
+		Individual best = getBest(population);
+		best.print();
+		//writeStats(best.write(),25000);
 	}
 
 	private void twoIsland(){
@@ -196,7 +193,10 @@ public class EA implements Runnable{
 //				count =0;
 //			}
 //
-//			if(iteration >1000 && !rank){
+//			if(count > 5000)
+//				break;
+//
+//			if(count >1000 && !rank){
 //				System.out.println("switching selection");
 //				selection++;
 //				count = 0;
@@ -210,7 +210,7 @@ public class EA implements Runnable{
 	}
 	private void writeStats(String best, int i){
 		try {
-			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(i+"Test.txt", true)));
+			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(i+"CrossTest.txt", true)));
 			String s = Parameters.maxIterations + " " + best;
 			writer.println(s);
 			writer.println();
