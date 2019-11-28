@@ -24,25 +24,27 @@ import teamPursuit.TeamPursuit;
 import teamPursuit.WomensTeamPursuit;
 
 public class EA implements Runnable{
-	
+
 	// create a new team with the default settings
-	public static TeamPursuit teamPursuit = new WomensTeamPursuit(); 
-	
+	public static TeamPursuit teamPursuit = new WomensTeamPursuit();
+
 	private ArrayList<Individual> population = new ArrayList<Individual>();
 	private ArrayList<Individual> population2;
 	private int iteration = 0;
 	private int selection = 0;
 
 	public EA() {
-		
+
 	}
 
-	
+
 	public static void main(String[] args) {
 		EA ea = new EA();
 		double sum;
+		Individual best = new Individual();
+		double bestFitness = 9999;
 		//loops through different selection methods
-		for(int j = 0; j<3;j++){
+		for(int j = 1; j<3;j++){
 			ea.selection = j;
 			sum = 0;
 			//run test 30 times
@@ -69,7 +71,7 @@ public class EA implements Runnable{
 		initialisePopulation();
 		System.out.println("finished init pop");
 
-		singleIsland(2,selection);
+		singleIsland(0,selection);
 
 		//writeStats(best.write(),selection);
 
@@ -233,27 +235,27 @@ public class EA implements Runnable{
 		if(Parameters.rnd.nextDouble() > Parameters.mutationProbability){
 			return child;
 		}
-		
+
 		// choose how many elements to alter
 		int mutationRate = 1 + Parameters.rnd.nextInt(Parameters.mutationRateMax);
-		
+
 		// mutate the transition strategy
 
-			//mutate the transition strategy by flipping boolean value
-			for(int i = 0; i < mutationRate; i++){
-				int index = Parameters.rnd.nextInt(child.transitionStrategy.length);
-				child.transitionStrategy[index] = !child.transitionStrategy[index];
-			}
+		//mutate the transition strategy by flipping boolean value
+		for(int i = 0; i < mutationRate; i++){
+			int index = Parameters.rnd.nextInt(child.transitionStrategy.length);
+			child.transitionStrategy[index] = !child.transitionStrategy[index];
+		}
 
-			//mutate the pacing by swapping two values in the chromosome
-			for(int i = 0; i< mutationRate;i++){
-				//int r = Parameters.rnd.nextInt(20)-10;
-				int index = Parameters.rnd.nextInt(child.pacingStrategy.length);
-				child.pacingStrategy[index] = Parameters.rnd.nextInt(550-200) +200;;
-			}
-			
-		
-		
+		//mutate the pacing by swapping two values in the chromosome
+		for(int i = 0; i< mutationRate;i++){
+			//int r = Parameters.rnd.nextInt(20)-10;
+			int index = Parameters.rnd.nextInt(child.pacingStrategy.length);
+			child.pacingStrategy[index] = Parameters.rnd.nextInt(550-200) +200;;
+		}
+
+
+
 		return child;
 	}
 
@@ -291,7 +293,7 @@ public class EA implements Runnable{
 			return parent1;
 		}
 		Individual child = new Individual();
-		
+
 		int crossoverPointT = Parameters.rnd.nextInt(parent1.transitionStrategy.length);
 		int crossoverPointP = Parameters.rnd.nextInt(parent1.pacingStrategy.length);
 
@@ -301,7 +303,7 @@ public class EA implements Runnable{
 		for(int i = crossoverPointP; i < parent2.pacingStrategy.length; i++){
 			child.pacingStrategy[i] = parent2.pacingStrategy[i];
 		}
-		
+
 		for(int i = 0; i < crossoverPointT; i++){
 			child.transitionStrategy[i] = parent1.transitionStrategy[i];
 		}
@@ -493,7 +495,7 @@ public class EA implements Runnable{
 		}
 		return worst;
 	}
-	
+
 	private void printPopulation() {
 		for(Individual individual : population){
 			System.out.println(individual);
@@ -504,10 +506,10 @@ public class EA implements Runnable{
 		population.clear();
 		while(population.size() < Parameters.popSize){
 			Individual individual = new Individual();
-			individual.initialise();			
+			individual.initialise();
 			individual.evaluate(teamPursuit);
 			population.add(individual);
-							
-		}		
-	}	
+
+		}
+	}
 }

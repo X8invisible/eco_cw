@@ -3,11 +3,6 @@
 
 1000 average: 215.97763333334564
 
-1001 438,506,304,448,396,422,312,529,443,421,384,543,457,529,501,405,257,297,429,231,488,500,458,false,true,false,true,true,true,false,true,false,false,true,false,false,true,false,true,true,false,false,true,true,false,
-215.0440000000142
-
-1001 average: 216.14240000001232
-
 1001 516,427,489,473,367,426,320,501,260,501,350,377,461,539,375,490,233,280,515,359,507,512,332,true,false,true,false,true,true,false,true,true,false,false,true,true,true,false,true,false,true,false,true,true,true,
 214.35800000001288
 

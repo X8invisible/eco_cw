@@ -1,8 +1,6 @@
 25000 490,441,509,447,519,441,336,537,208,411,522,406,406,364,462,356,460,549,506,491,546,302,230,false,true,true,false,true,true,false,true,true,false,true,false,false,true,false,false,true,false,true,true,false,false,
 211.48600000001477
 
-25000 447,460,532,202,513,407,476,530,481,525,541,329,240,456,339,296,521,265,539,316,349,498,361,true,false,false,true,false,true,false,false,false,true,false,true,false,true,true,true,true,false,false,true,false,true,
-214.93800000001397
 
 25000 527,440,429,280,379,482,539,541,292,541,386,543,533,371,458,436,260,440,452,536,425,332,263,true,false,true,false,true,false,false,true,false,true,true,false,true,true,true,false,true,true,false,false,false,false,
 211.48800000001395
