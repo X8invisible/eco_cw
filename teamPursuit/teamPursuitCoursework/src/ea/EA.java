@@ -44,7 +44,7 @@ public class EA implements Runnable{
 		Individual best = new Individual();
 		double bestFitness = 9999;
 		//loops through different selection methods
-		for(int j = 1; j<3;j++){
+		for(int j = 0; j<3;j++){
 			ea.selection = j;
 			sum = 0;
 			//run test 30 times
@@ -60,7 +60,7 @@ public class EA implements Runnable{
 				System.out.println(bestFitness);
 			}
 			ea.writeStats(best.write(),j);
-			ea.writeStats("average: "+ 2500, j);
+			ea.writeStats("average: "+ sum/30, j);
 		}
 		//ea.run();
 

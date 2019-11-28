@@ -1,0 +1,5 @@
+1000 548,486,405,346,493,526,458,367,441,419,400,330,530,426,261,516,425,485,272,331,252,519,336,false,true,false,true,false,true,false,true,false,true,true,false,true,true,true,false,true,false,true,false,false,false,
+213.56000000001242
+
+1000 average: 2500
+
