@@ -1,8 +1,0 @@
-533,452,494,512,332,480,336,449,488,529,426,398,487,525,421,208,438,258,307,490,430,472,465,
-false,false,false,true,false,true,false,true,false,true,false,false,false,true,false,true,false,true,true,false,false,false,
-212.28600000001327
-
-
-491,391,490,516,381,500,540,395,366,477,289,374,486,539,237,454,352,536,487,453,448,495,255,
-true,false,true,false,true,true,true,true,false,true,true,true,true,true,false,true,false,false,true,true,false,false,
-211.57600000001497

@@ -15,13 +15,13 @@ public class Parameters {
 	
 	
 	public static int popSize = 50;
-	public static int tournamentSize = 5;
+	public static int tournamentSize = 15;
 	
 	public static int mutationRateMax = 8;//out of len
 	public static double mutationProbability = 0.65;
 	public static double crossoverProbability = 1.0;
 	
-	public static int maxIterations = 2000;
+	public static int maxIterations = 10000;
 	
 	
 }
